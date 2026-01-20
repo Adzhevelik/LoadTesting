@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package glossary;
+
+service GlossaryService {
+  rpc GetAllTerms(Empty) returns (TermsList);
+  rpc GetTerm(GetTermRequest) returns (Term);
+  rpc CreateTerm(CreateTermRequest) returns (Term);
+  rpc UpdateTerm(UpdateTermRequest) returns (Term);
+  rpc DeleteTerm(DeleteTermRequest) returns (DeleteResponse);
+  rpc CreateRelationship(CreateRelationshipRequest) returns (RelationshipResponse);
+  rpc GetGraph(Empty) returns (GraphResponse);
+}
+
+message Empty {}
+
+message Term {
+  string keyword = 1;
+  string definition = 2;
+  string category = 3;
+  string source = 4;
+}
+
+message TermsList {
+  repeated Term terms = 1;
+}
+
+message GetTermRequest {
+  string keyword = 1;
+}
+
+message CreateTermRequest {
+  string keyword = 1;
+  string definition = 2;
+  string category = 3;
+  string source = 4;
+}
+
+message UpdateTermRequest {
+  string keyword = 1;
+  string definition = 2;
+  string category = 3;
+}
+
+message DeleteTermRequest {
+  string keyword = 1;
+}
+
+message DeleteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message CreateRelationshipRequest {
+  string term1 = 1;
+  string term2 = 2;
+  string relation_type = 3;
+}
+
+message RelationshipResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message Relationship {
+  string type = 1;
+  string target = 2;
+  string target_definition = 3;
+}
+
+message GraphNode {
+  Term term = 1;
+  repeated Relationship relationships = 2;
+}
+
+message GraphResponse {
+  repeated GraphNode nodes = 1;
+}
